@@ -1,11 +1,9 @@
 // ------------------ Note -----------------------
-// WHEN : 7th Nov. 2018
+// WHEN : 8th Nov. 2018
 // 
-// WHAT  - To-do live searchc
-//       - Count incomplete items
-//       - Receive user input value (not by submit)
-//
-// NEXT : Add a feature to receive input through 'submit' (script.js)
+// WHAT  - use checkbox to make 'hide completed' function
+//         (Success!!!) :D
+// NEXT : Try teacher's solution
 //-------------------------------------------------
 
 const todos = [
@@ -28,11 +26,11 @@ const todos = [
 ]
 
 const body = document.querySelector('body')
-const createBtn = document.querySelector('#create-to-do')
-const newInput = document.querySelector('#new-input')
 const searchInput = document.querySelector('#search-input')
 const todosArea = document.querySelector('#todos-area')
 const summaryArea = document.querySelector('#summary')
+const form = document.querySelector('#form')
+const checkbox = document.querySelector('#check-hide')
 
 
 // [Define Fn] Count some array's incomplete items
@@ -56,57 +54,72 @@ const filterKeyword = {
     searchWord : ''
 }
 
-// [Define Fn] Filter array + create p
+// [Define Fn] Create p
+const renderTodo = function (arrayName) {
+    todosArea.innerHTML = ''
+
+    arrayName.forEach(function (each) {
+        const newTodo = document.createElement('p')
+        newTodo.textContent = each.text
+        todosArea.appendChild(newTodo)
+    })
+}
+
+// [Define Fn] Filter array + 
 const renderFilter = function (todoName) {    // Andrew made filterKeyword as 2nd arg.
     const filteredTodo = todoName.filter(function (todo) {
         return todo.text.toLowerCase().includes(filterKeyword.searchWord)
     })
 
-    todosArea.innerHTML = ''
-
-    // [Create & Show - from Array]
-    filteredTodo.forEach(function (each) {
-        const newTodo = document.createElement('p')
-        newTodo.textContent = each.text
-        todosArea.appendChild(newTodo)
-    })
-
+    renderTodo(filteredTodo)
     countIncomplete(filteredTodo)
 }
-
-
-// [Define Fn] Create a single new todo
-const createNewTodo = function () {
-    const createdTodo = {
-        text: newInput.value,
-        completed: false
-    }
-    todos.push(createdTodo)
-
-    newInput.value = ''
-    todosArea.innerHTML = ''
-
-    todos.forEach(function (each) {
-        const updatedTodo = document.createElement('p')
-        updatedTodo.textContent = each.text
-        todosArea.appendChild(updatedTodo)
-    })
-}
-
 
 // [Invoke Fn] Filter array + create p
 renderFilter(todos)
 
 
-// [Listener][01] Add todo Button
-createBtn.addEventListener('click', function (e) {
-    createNewTodo(todos)
-    countIncomplete(todos)
-})
+// [Create] A or B : if unchecked vs checked
+const createTodoObj = function (e) {
+    e.preventDefault()
+    const newTodoValue = e.target.elements.todoContent
+    const createdTodo = {
+        text: newTodoValue.value,
+        completed: false
+    }
+    todos.push(createdTodo)
+    newTodoValue.value = ''
 
+    if (checkbox.checked) {
+        hideComplete(todos)      // show complete items
+    } else {
+        renderTodo(todos)   // show all items
+    }
+}
+
+// [Create] Filter Complete
+const hideComplete = function (todoName) {
+
+    // [Array] Keep incomplete elements 
+    const filterComplete = todoName.filter(function (todo) {
+        return todo.completed === false
+    })
+    renderFilter(filterComplete)
+
+}
 
 // [Listener][02] Input box
 searchInput.addEventListener('input', function (e) {
     filterKeyword.searchWord = e.target.value
     renderFilter(todos)
+})
+
+form.addEventListener('submit', createTodoObj)
+
+checkbox.addEventListener('change', function (e) {
+    if (e.target.checked) {
+        hideComplete(todos)
+    } else {
+        renderTodo(todos)
+    }
 })
