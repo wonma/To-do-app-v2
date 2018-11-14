@@ -1,9 +1,3 @@
-// ------------------ Note -----------------------
-// WHEN : 9th Nov. 2018
-// 
-// WHAT  - Refactoring
-//-------------------------------------------------
-
 const todos = getData()
 
 // Keyword updator (Receiving a value from [Listener][02])
@@ -14,14 +8,14 @@ const filterInfo = {
 
 renderTodo(todos, filterInfo)
 
-searchInput.addEventListener('input', function (e) {
+searchInput.addEventListener('input', (e) => {
     filterInfo.searchWord = e.target.value
     renderTodo(todos, filterInfo)
 })
 
 form.addEventListener('submit', createTodoObj)
 
-checkbox.addEventListener('change', function (e) {
+checkbox.addEventListener('change', (e) => {
     filterInfo.hideCompleted = e.target.checked
     renderTodo(todos, filterInfo)
 })

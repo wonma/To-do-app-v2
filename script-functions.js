@@ -8,27 +8,27 @@ const checkbox = document.querySelector('#check-hide')
  
 
 // Read existing todos from localStrorage
-const getData = function () {
+const getData = () => {
     const todosJSON = localStorage.getItem('todos')
 
-    if (todosJSON !== null) {
-        return JSON.parse(todosJSON)  // parsed array
-    } else {
-        return []  // empty array
-    }
+    // if (todosJSON !== null) {
+    //     return JSON.parse(todosJSON)  // parsed array
+    // } else {
+    //     return []  // empty array
+    // }
+    return todosJSON ? JSON.parse(todosJSON) : []
+    // ** (function내에서) return을 쓰지 않았더니 getData에는 undefined가 담겼음....!!
 }
 
 
 // Remove Todo
-const removeTodo = function (todoID) {
-    const todoIndex = todos.findIndex(function (todo) {
-        todo.id === todoID
-    })
+const removeTodo = (todoID) => {
+    const todoIndex = todos.findIndex((todo) => todo.id === todoID)
     todos.splice(todoIndex, 1)
 }
 
 // Update check(completed true vs false) status
-const updateCheckStatus = function (id) {
+const updateCheckStatus = (id) => {
     // const checkTodoId = todos.findIndex(function (todo) {
     //     return todo.id === id
     // }) 
@@ -39,18 +39,16 @@ const updateCheckStatus = function (id) {
     // }
     //
     //샘 버젼
-    const todoToCheck = todos.find(function (todo) {
-        return todo.id === id
-    })
+    const todoToCheck = todos.find((todo) => todo.id === id)
     if(todoToCheck !== undefined) {
         todoToCheck.completed = !todoToCheck.completed
     }
 }
 
 // Get the DOM elements for individual notes
-const generateTodoDOM = function (filteredTodo) {
+const generateTodoDOM = (filteredTodo) => {
     todosArea.innerHTML = ''
-    filteredTodo.forEach(function (eachTodo) {
+    filteredTodo.forEach((eachTodo) => {
         const todoDiv = document.createElement('div')
         const checkboxLabel = document.createElement('label')
         const checkboxEl = document.createElement('input')
@@ -64,7 +62,7 @@ const generateTodoDOM = function (filteredTodo) {
         // } 내가한것은 복잡함
         checkboxEl.checked = eachTodo.completed // 이건 샘이 간단하게 한 것
         checkboxLabel.appendChild(checkboxEl)
-        checkboxEl.addEventListener('change', function () {
+        checkboxEl.addEventListener('change', () => {
             updateCheckStatus(eachTodo.id)
             saveTodos(todos)
             renderTodo(todos, filterInfo)
@@ -80,7 +78,7 @@ const generateTodoDOM = function (filteredTodo) {
         // Setup delete button
         removeButton.textContent = 'x'
         todoDiv.appendChild(removeButton)
-        removeButton.addEventListener('click', function () {
+        removeButton.addEventListener('click', () => {
             removeTodo(eachTodo.id) // modifying
             saveTodos(todos) // saving in localStorage
             renderTodo(todos, filterInfo) // rerendering
@@ -93,10 +91,8 @@ const generateTodoDOM = function (filteredTodo) {
 
 
 // Get the DOM element for list summary 
-const generateSummaryDOM = function (filteredTodo) {
-    const incompleteTodoCount = filteredTodo.filter(function (todo) {
-        return !todo.completed
-    })
+const generateSummaryDOM = (filteredTodo) => {
+    const incompleteTodoCount = filteredTodo.filter((todo) => !todo.completed)
 
     summaryArea.innerHTML = ''
     // [Create & Show] h2 with num of incomplete elements, put it on screen.
@@ -107,14 +103,11 @@ const generateSummaryDOM = function (filteredTodo) {
 
 
 //  Render app todos based on filters
-const renderTodo = function (todoName, filterInfo) {
+const renderTodo = (todoName, filterInfo) => {
 
-    let filteredTodo = todoName.filter(function (todo) {
-        return todo.text.toLowerCase().includes(filterInfo.searchWord)
-      
-    })
+    let filteredTodo = todoName.filter((todo) => todo.text.toLowerCase().includes(filterInfo.searchWord))
 
-    filteredTodo = filteredTodo.filter(function (todo) {
+    filteredTodo = filteredTodo.filter((todo) => {
         if (filterInfo.hideCompleted) {
             return !todo.completed // completed가 false인것만 출력
         } else {
@@ -127,7 +120,7 @@ const renderTodo = function (todoName, filterInfo) {
 }
 
 // Create new todo and render
-const createTodoObj = function (e) {
+const createTodoObj = (e) => {
     e.preventDefault()
 
     const createdTodo = {
@@ -144,7 +137,7 @@ const createTodoObj = function (e) {
 
 
 // Save todos to localStorage
-const saveTodos = function (todos) {
+const saveTodos = (todos) => {
     todosToJSON = JSON.stringify(todos) 
     localStorage.setItem('todos', todosToJSON)
 }
