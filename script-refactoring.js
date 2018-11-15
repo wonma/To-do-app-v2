@@ -1,3 +1,5 @@
+'use strict'
+
 const todos = getData()
 
 // Keyword updator (Receiving a value from [Listener][02])

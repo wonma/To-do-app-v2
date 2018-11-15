@@ -1,3 +1,4 @@
+'use strict'
 
 const body = document.querySelector('body')
 const searchInput = document.querySelector('#search-input')
@@ -16,7 +17,11 @@ const getData = () => {
     // } else {
     //     return []  // empty array
     // }
-    return todosJSON ? JSON.parse(todosJSON) : []
+    try {  // 아래를 시행하다가 에러가 나면 catch 블록을 대체용으로 실행하고 crash 시키지 않음.
+        return notesFromJSON ? JSON.parse(notesFromJSON) : []
+    } catch (e) {
+        return []
+    }
     // ** (function내에서) return을 쓰지 않았더니 getData에는 undefined가 담겼음....!!
 }
 
