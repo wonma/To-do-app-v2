@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>To-do App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.png?v=1">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+ 
+<body>
+    <div class="header">
+        <div class="container">
+            <h1 class="header__title">To-do App</h1>
+            <h2 class="header__subtitle">What do you need to do?</h2>
+        </div>
+    </div>
+
+    <div class="actions">
+        <div class="actions__container">
+            <input id="search-input" class="input" type="text" placeholder="Search word" autoinitialize="none">
+            <label for="check-hide" class="checkbox">
+                <input type="checkbox" id="check-hide">Hide Completed To-do
+            </label>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="todos-area"></div>
+        <form id="form">
+            <input type="text" class="input" placeholder="Add New" name="todoContent">
+            <button class="button">Add to-do</button>
+        </form>
+    </div>
+
+    <script src="scripts/bundle.js"></script>
+</body>
+
+</html>
